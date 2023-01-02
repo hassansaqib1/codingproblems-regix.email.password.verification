@@ -1,0 +1,153 @@
+//
+//  main.cpp
+//  dataHW4
+//
+//  Created by Hassan Saqib on 14/09/2022.
+//
+
+#include <iostream>
+#include <string>
+#include <regex>
+using namespace std;
+
+bool passwordvalidation(string password){
+  
+    //password is cheaked with full pattern(having all condition)
+    //if full pattern (all condition) are not valid
+    //then indiviually each condition is cheaked to prompt an error
+          
+    //indiviual condition
+    string uppercase="(?=.*[A-Z])";  
+    string digit="(?=.*[0-9])";
+    string specialcharacter="(?=.*[$@_#%&*?!-])";
+    string minandmax="(?=.{5,11})";
+  
+    //full condition
+    string fullpattern= uppercase+digit+specialcharacter+minandmax;
+   
+    //regex
+    regex regexRule(fullpattern);
+    regex uppercaser(uppercase);
+    regex digitr(digit);
+    regex specialcharacterr(specialcharacter);
+    regex minandmaxr(minandmax);
+    
+    //regex are searched
+    bool isvalid=regex_search(password,regexRule);
+    bool hasuppercase=regex_search(password,uppercaser);
+    bool hasdigit=regex_search(password,digitr);
+    bool hasspecialcharacter=regex_search(password,specialcharacterr);
+    bool lenghthcheak=regex_search(password,minandmaxr);
+    
+    //if else conditions are placed to cheak conditons
+    //and to display if any condition is failed
+    
+    if (isvalid) {
+        cout<<"Password Valid.";
+    }else{
+        
+        cout<<"Password not valid!"<<endl;
+        cout<<"As it has  ";
+        if (hasuppercase==false) {
+            cout<<"no uppercase letters ";
+        }
+        if (hasdigit==false) {
+            cout<<"no digit ";
+        }
+        if (hasspecialcharacter==false) {
+            cout<<"no specialcharacter "<<endl;
+        }
+        if (lenghthcheak==false) {
+            cout<<"length of password should be between 5-11 ";
+        }
+        
+    }
+    cout<<endl;
+    return isvalid;
+}
+
+
+bool emailvalidatiion(string email){
+
+// email is cheaked by 3 pattern its formate will cheak most of thing
+// then there is a cheak for numbers of specail charecter
+// and last cheak id of consecative special chracters
+    
+    
+    //formate for email
+    //regex pattern is and has a set of domains as well
+    string regexpattern="^[a-z|A-Z]{1,1}[A-Z|a-z|0-9|-|.|_]+[a-z|A-Z|0-9]{0,1}@(gmail|github|domain|yahoo|hotmail|icloud).com";
+        regex regenrule(regexpattern);
+    bool isvalid=regex_match(email,regenrule);
+    
+    //for consecative chracters
+    
+    string consecativechar="[-._]{2,}";//pattern for consecative spec_char
+    regex  consecativecharr(consecativechar);
+    bool  valid2=regex_search(email,consecativecharr);
+    
+  //using regex to count the number of special chracter
+  //and placing a count cheak that wheater number excesdes 3 or not
+    string spcount="(?=.*[-._])";
+    regex rspcount(spcount);
+    int count=0;
+    string temp_email=email;
+    bool valid3=regex_search(temp_email,rspcount);
+    
+    while(valid3==true && count<=5){
+        for (int i=0; i<temp_email.length(); i++) {
+            if (temp_email[i]=='.' || temp_email[i]=='_'|| temp_email[i]=='-') {
+                temp_email[i]='x';
+                count++;
+                valid3=regex_search(temp_email,rspcount);
+            }
+        }
+    }
+    
+    if (isvalid==true) {
+
+            if (count<=4) {
+                if (valid2==false) {
+                    cout<<"Email is valid"<<endl;
+                    return true;
+                }else{cout<<"Email Not Valid! has consecative special characters"<<endl;return false;}
+            }else{
+                cout<<"Email is invalid(special charcters>3)"<<endl;
+                return false;
+            }
+               
+    }else{
+        cout<<"Incorrect formate of email id."<<endl;
+        return false;}
+    return true;
+}
+
+int main(int argc, const char * argv[]) {
+    
+    cout<<"Email and Password Validation program"<<endl<<endl;
+    
+    string email;
+    string password;
+    
+    cout<<"Enter your Email(Email can have domains:domain,icloud,gmail,github,yahoo,hotmail):";
+    //input for email
+    cin>>email;
+    
+    //email send to validation function
+    emailvalidatiion(email);
+    
+    //input for password
+    cout<<"Enter your password:";
+    cin>>password;
+    
+    //password send to validation function
+    passwordvalidation(password);
+    
+    cout<<"End of the program. "<<endl;
+    cout<<" "<<endl;
+    
+    return 0;
+}
+
+// Created by Hassan Saqib on 14/09/2022.
+//---------------------------------------------------------------------------------------
