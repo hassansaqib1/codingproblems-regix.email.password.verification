@@ -1,0 +1,15 @@
+String matching and Regex
+You are hired to work on input validation of an application.
+a. Your 1st task is to write a C++ code for password validation. A valid password must
+satisfy following conditions:
+1. Length of password should be more than 5 and less than 11
+2. Password must contain at least 1 digit, 1 uppercase Letter and 1 special character
+b. Your 2nd task is to write a C++ code for email validation. A valid email must satisfy
+following conditions:
+1. Email must have the given format “prefix@domain.com”.
+2. Domain must be a valid domain (must match with any domain in domain dataset).
+3. 1
+st char of prefix must be an alphabet
+4. prefix can have only 3 special characters (- , . , _)
+5. 2 consecutive special characters in prefix are not allowed
+6. Last character of a prefix can not be a special character
